@@ -1,4 +1,4 @@
-// Here you import the PropTypes library
+import React from "react";
 import PropTypes from "prop-types";
 
 // The BookCard function component
