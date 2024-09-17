@@ -1,47 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: "Aliens",
-      image:
-        "https://m.media-amazon.com/images/I/910xaEX2ThL._AC_UY327_FMwebp_QL65_.jpg",
-      director: "James Cameron",
-    },
-    {
-      id: 2,
-      title: "The VVitch",
-      image:
-        "https://m.media-amazon.com/images/I/81Z2E0P8GlL._AC_UY327_FMwebp_QL65_.jpg",
-      director: "Robert Eggers",
-    },
-    {
-      id: 3,
-      title: "Sleeper",
-      image:
-        "https://m.media-amazon.com/images/I/7181hYzVEnL._AC_UL480_FMwebp_QL65_.jpg",
-      director: "Woody Allen",
-    },
-    {
-      id: 4,
-      title: "There Will Be Blood",
-      image:
-        "https://m.media-amazon.com/images/I/81Hm0bQxxML._AC_UY327_FMwebp_QL65_.jpg",
-      director: "Paul Thomas Anderson",
-    },
-    {
-      id: 5,
-      title: "No Country for Old Men",
-      image:
-        "https://m.media-amazon.com/images/I/81VMYoT--IL._AC_UY327_FMwebp_QL65_.jpg",
-      director: "Joel Cohen, Ethan Cohen",
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
 
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    fetch("https://my-cinema-selector-55c96f84466e.herokuapp.com/movies")
+      .then((response) => response.json())
+      .then((data) => {
+        const moviesFromApi = data.docs.map((doc) => {
+          return {
+            id: movies.key,
+            title: movies.title,
+            image: movies.imageurl,
+            director: movies.director_name?.[0],
+          };
+        });
+
+        setMovies(moviesFromApi);
+      });
+  }, []);
 
   if (selectedMovie) {
     return (
